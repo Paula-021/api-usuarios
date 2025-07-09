@@ -1,16 +1,15 @@
 package com.paula.apiusuario.endpoints;
 
 import com.paula.apiusuario.domain.User;
-import com.paula.apiusuario.exceptions.ExistsUserValidationException;
+import com.paula.apiusuario.exceptions.UserEmailExistsException;
+import com.paula.apiusuario.exceptions.UserExistsValidationException;
 import com.paula.apiusuario.exceptions.UserFieldsValidationException;
+import com.paula.apiusuario.exceptions.UserNotFoundException;
 import com.paula.apiusuario.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
@@ -25,7 +24,7 @@ public class UserController {
     public ResponseEntity<?> addUser(@RequestBody User user) {
         try{
             userService.addUser(user);
-        } catch (ExistsUserValidationException ex) {
+        } catch (UserExistsValidationException ex) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage()); //409 Conflict
         } catch (UserFieldsValidationException e) {
             return ResponseEntity.badRequest().body("Error adding user: " + e.getMessage()); //400 Bad Request
@@ -33,4 +32,21 @@ public class UserController {
 
         return ResponseEntity.created(URI.create("/users/" + user.getId())).body("User added successfully!");//201 Created
     }
+    //testar
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable Long id) {
+        user.setId(id);
+        try {
+            userService.updateUser(user);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.notFound().build(); //404 Not Found
+        } catch (UserEmailExistsException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage()); //409 Conflict
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error updating user: " + e.getMessage()); //400 Bad Request
+        }
+        return ResponseEntity.ok("User updated successfully!"); //200 OK
+    }
+    //testar métodos
+
 }
