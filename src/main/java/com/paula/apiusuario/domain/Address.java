@@ -1,4 +1,4 @@
 package com.paula.apiusuario.domain;
 
-public class Usuario {
+public class Address {
 }
