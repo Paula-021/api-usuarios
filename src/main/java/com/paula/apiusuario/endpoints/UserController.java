@@ -73,11 +73,15 @@ public class UserController {
     }
     @GetMapping
     public ResponseEntity<?> getAllUsers () {
-        List<User> users = userService.getAllUsers();
-        if (users.isEmpty()) {
-            return ResponseEntity.notFound().build(); //404 Not Found
+
+        try {
+            List<User> users = userService.getAllUsers();
+            return ResponseEntity.ok(users); //200 OK
+        }catch (UserNotFoundException e) {
+            return ResponseEntity.noContent().build(); //204 No Content
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error retrieving users: " + e.getMessage()); //400 Bad Request
         }
-        return ResponseEntity.ok(users); //200 OK
     }
 
 }
