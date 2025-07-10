@@ -60,5 +60,15 @@ public class UserController {
         }
         return ResponseEntity.ok("User deleted successfully!"); //200 OK
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable Long id) {
+        User user = null;
+        try {
+            user = userService.getUserById(id);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.notFound().build(); //404 Not Found
+        }
+        return ResponseEntity.ok(user); //200 OK
+    }
 
 }
