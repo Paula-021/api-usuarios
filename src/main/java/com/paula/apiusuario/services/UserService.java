@@ -6,6 +6,8 @@ import com.paula.apiusuario.exceptions.UserExistsValidationException;
 import com.paula.apiusuario.exceptions.UserFieldsValidationException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface UserService {
     void addUser(User user) throws UserFieldsValidationException, UserExistsValidationException;
@@ -15,4 +17,6 @@ public interface UserService {
     void deleteUser(Long id);
 
     User getUserById(Long id);
+
+    List<User> getAllUsers();
 }
