@@ -46,12 +46,21 @@ public class UserServiceImpl implements UserService {
         if(existingUser.isPresent()) {
             if(!existingUser.get().getId().equals(user.getId())) {
                 //Se o usuário já existe e não é o mesmo que está sendo atualizado, lança a exceção.
-                throw new UserEmailExistsException("User already exists with email: " + user.getEmail());
+                   throw new UserEmailExistsException("User already exists with email: " + user.getEmail());
 
             }
         }
         userRepository.save(user);
     }
-    
+
+    @Override
+    public void deleteUser(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (!userOptional.isPresent()) {
+            throw new UserNotFoundException("User not found with ID: " + id);
+        }
+        userRepository.deleteById(id);
+    }
+
 
 }

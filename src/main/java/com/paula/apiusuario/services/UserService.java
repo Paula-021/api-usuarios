@@ -11,4 +11,6 @@ public interface UserService {
     void addUser(User user) throws UserFieldsValidationException, UserExistsValidationException;
 
     void updateUser(User user) throws UserFieldsValidationException, UserEmailExistsException;
+
+    void deleteUser(Long id);
 }
