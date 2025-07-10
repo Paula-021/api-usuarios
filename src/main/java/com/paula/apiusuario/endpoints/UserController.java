@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController //Bean -> Uma anotação que indica que a classe é um controlador REST do Spring
 @RequestMapping("/users")
@@ -69,6 +70,14 @@ public class UserController {
             return ResponseEntity.notFound().build(); //404 Not Found
         }
         return ResponseEntity.ok(user); //200 OK
+    }
+    @GetMapping
+    public ResponseEntity<?> getAllUsers () {
+        List<User> users = userService.getAllUsers();
+        if (users.isEmpty()) {
+            return ResponseEntity.notFound().build(); //404 Not Found
+        }
+        return ResponseEntity.ok(users); //200 OK
     }
 
 }
