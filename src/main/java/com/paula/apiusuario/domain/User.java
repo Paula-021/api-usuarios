@@ -8,8 +8,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @OneToOne
-    private Address address;
+    //@OneToOne
+    //private Address address;
     private String email;
 
     public void setId(Long id) {
@@ -28,13 +28,13 @@ public class User {
         this.name = name;
     }
 
-    public Address getAddress() {
-        return address;
-    }
+    //public Address getAddress() {
+     //   return address;
+    //}
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
+    //public void setAddress(Address address) {
+//        this.address = address;
+//    }
 
     public String getEmail() {
         return email;
