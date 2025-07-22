@@ -1,0 +1,16 @@
+1: fazer a branch do endereço (implementar a classe endereço)
+2: fazer a branch do add endereço no usuário (feat/add-address-to-user)
+
+3: fazer a branch feat/viacepapi
+4: implementar a classe ViaCepApiService
+5: implementar a classe ViaCepApiServiceImpl
+6: fazer o método findEnderecoByCep(String cep) na classe ViaCepApiService
+7: pegar o endereço encontrado e associar o usuário no método addUser na controller
+
+
+
+1: UserRequestDTO -> nome, email, cep
+2: UserResponseDTO -> nome, endereco AddressResponseDTO (cep, logradouro,  bairro, cidade, estado)
+//DTO -> Data Transfer Object
+
+AddressResponseDTO -> cep, logradouro, bairro, cidade, estado

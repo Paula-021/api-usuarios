@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUser(User user) throws UserFieldsValidationException, UserExistsValidationException {
     if(user.getName() == null || user.getName().isEmpty() ||
-       user.getAddress() == null || user.getEmail() == null || user.getEmail().isEmpty()) {
+        user.getEmail() == null || user.getEmail().isEmpty()) {
         throw new UserFieldsValidationException("Some field is empty.");
 
     }
@@ -40,14 +40,18 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException("User not found with ID: " + user.getId());
         }
         if(user.getName() == null || user.getName().isEmpty() ||
-           user.getAddress() == null || user.getEmail() == null || user.getEmail().isEmpty()) {
+           user.getEmail() == null || user.getEmail().isEmpty()) {
             throw new UserFieldsValidationException("Some field is empty.");
         }
         Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
         if(existingUser.isPresent()) {
             if(!existingUser.get().getId().equals(user.getId())) {
-                //Se o usuário já existe e não é o mesmo que está sendo atualizado, lança a exceção.
+                //Se o usuario já existe e não é o mesmo que está sendo atualizado, lança a exceção.
                    throw new UserEmailExistsException("User already exists with email: " + user.getEmail());
+
+                //o id usuario que existe tem que ser o mesmo do usuário que está sendo editado.
+                //Se for o mesmo usuário editando seus dados → tudo bem.
+                //Se for outro usuário tentando usar um e-mail que já existe → erro (ids diferentes).
 
             }
         }
