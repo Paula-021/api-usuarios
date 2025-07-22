@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUser(User user) throws UserFieldsValidationException, UserExistsValidationException {
     if(user.getName() == null || user.getName().isEmpty() ||
-        user.getEmail() == null || user.getEmail().isEmpty()) {
+        user.getEmail() == null || user.getEmail().isEmpty() || user.getAddress() == null) {
         throw new UserFieldsValidationException("Some field is empty.");
 
     }
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException("User not found with ID: " + user.getId());
         }
         if(user.getName() == null || user.getName().isEmpty() ||
-           user.getEmail() == null || user.getEmail().isEmpty()) {
+           user.getEmail() == null || user.getEmail().isEmpty() || user.getAddress() == null) {
             throw new UserFieldsValidationException("Some field is empty.");
         }
         Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
