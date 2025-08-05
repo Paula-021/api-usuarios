@@ -11,11 +11,19 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String cep;
+    private String logradouro;
     private String complemento;
     private String unidade;
     private String bairro;
     private String localidade;
     private String uf;
+
+    public String getLogradouro() {
+        return logradouro;
+    }
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
+    }
 
     public Long getId() {
         return id;
