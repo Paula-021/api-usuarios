@@ -1,6 +1,8 @@
 package com.paula.apiusuario.endpoints;
 
+import com.paula.apiusuario.domain.Address;
 import com.paula.apiusuario.domain.User;
+import com.paula.apiusuario.endpoints.dtos.UserRequestDTO;
 import com.paula.apiusuario.exceptions.UserEmailExistsException;
 import com.paula.apiusuario.exceptions.UserExistsValidationException;
 import com.paula.apiusuario.exceptions.UserFieldsValidationException;
@@ -21,17 +23,26 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AddressService addressService;
+
     @PostMapping
-    public ResponseEntity<?> addUser(@RequestBody User user) {
+    public ResponseEntity<?> addUser(@RequestBody UserRequestDTO userRequestDTO) {
         try{
-            userService.addUser(user);
+            Address address = addressService.findAddress(userRequestDTO.getCep());
+            addressService.addAddress(address);
+            userService.addUser(userRequestDTO.toEntity(address));
         } catch (UserExistsValidationException ex) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage()); //409 Conflict
         } catch (UserFieldsValidationException e) {
             return ResponseEntity.badRequest().body("Error adding user: " + e.getMessage()); //400 Bad Request
+        } catch (AddressNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); //404 Not Found
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error adding user"); //400 Bad Request
         }
 
-        return ResponseEntity.created(URI.create("/users/" + user.getId())).body("User added successfully!");//201 Created
+        return ResponseEntity.ok().body("User added successfully!");//200 OK
     }
     //testar
     @PutMapping("/{id}")
