@@ -17,10 +17,13 @@ public class AddressServiceImpl implements AddressService {
     public Address findAddress(String cep) throws AddressNotFoundException {
         RestTemplate restTemplate = new RestTemplate();
         String url = "https://viacep.com.br/ws/" + cep + "/json";
-        Address address = restTemplate.getForObject(url, Address.class); // Jackson converte o JSON para o objeto Address
-        if(address == null || address.getCep() == null || address.getCep().isEmpty()) {
-            throw new AddressNotFoundException("Endereço não encontrado para o CEP: " + cep);
+        Address address = null;
+        try{
+            address = restTemplate.getForObject(url, Address.class); // Verifica se o CEP é válido
+        } catch (Exception e) {
+            throw new AddressNotFoundException("CEP inválido ou não encontrado: " + cep);
         }
+        System.out.println("Endereço encontrado: " + address);
         return address;
     }
 

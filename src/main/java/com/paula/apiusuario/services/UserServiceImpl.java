@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUser(User user) throws UserFieldsValidationException, UserExistsValidationException {
     if(user.getName() == null || user.getName().isEmpty() ||
-        user.getEmail() == null || user.getEmail().isEmpty() || user.getAddress() == null) {
+        user.getEmail() == null || user.getEmail().isEmpty()) {
         throw new UserFieldsValidationException("Some field is empty.");
 
     }

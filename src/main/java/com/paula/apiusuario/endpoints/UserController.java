@@ -37,7 +37,7 @@ public class UserController {
         } catch (AddressNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); //404 Not Found
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error adding user"); //400 Bad Request
+            return ResponseEntity.badRequest().body("Error adding user" + e.getMessage()); //400 Bad Request
         }
 
         return ResponseEntity.ok().body("User added successfully!");//200 OK
