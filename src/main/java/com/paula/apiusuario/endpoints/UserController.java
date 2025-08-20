@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController //Bean -> Uma anotação que indica que a classe é um controlador REST do Spring
@@ -89,7 +90,13 @@ public class UserController {
 
         try {
             List<User> users = userService.getAllUsers();
-            return ResponseEntity.ok(users); //200 OK
+
+            List<UserResponseDTO> userResponseDTOs = users.stream().map(user -> {
+                AddressResponseDTO addressResponseDTO = new AddressResponseDTO(user.getAddress());
+                return new UserResponseDTO(user.getName(), user.getEmail(), addressResponseDTO);
+            }).toList();
+
+            return ResponseEntity.ok(userResponseDTOs); //200 OK
         }catch (UserNotFoundException e) {
             return ResponseEntity.noContent().build(); //204 No Content
         } catch (Exception e) {
