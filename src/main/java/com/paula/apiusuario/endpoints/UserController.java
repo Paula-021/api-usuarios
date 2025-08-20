@@ -2,7 +2,9 @@ package com.paula.apiusuario.endpoints;
 
 import com.paula.apiusuario.domain.Address;
 import com.paula.apiusuario.domain.User;
+import com.paula.apiusuario.endpoints.dtos.AddressResponseDTO;
 import com.paula.apiusuario.endpoints.dtos.UserRequestDTO;
+import com.paula.apiusuario.endpoints.dtos.UserResponseDTO;
 import com.paula.apiusuario.exceptions.*;
 import com.paula.apiusuario.services.AddressService;
 import com.paula.apiusuario.services.UserService;
@@ -72,13 +74,15 @@ public class UserController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
-        User user = null;
+        UserResponseDTO userResponseDTO = null;
         try {
-            user = userService.getUserById(id);
+            User user = userService.getUserById(id);
+            AddressResponseDTO addressResponseDTO = new AddressResponseDTO(user.getAddress());
+            userResponseDTO = new UserResponseDTO(user.getName(), user.getEmail(), addressResponseDTO);
         } catch (UserNotFoundException e) {
             return ResponseEntity.notFound().build(); //404 Not Found
         }
-        return ResponseEntity.ok(user); //200 OK
+        return ResponseEntity.ok(userResponseDTO); //200 OK
     }
     @GetMapping
     public ResponseEntity<?> getAllUsers () {

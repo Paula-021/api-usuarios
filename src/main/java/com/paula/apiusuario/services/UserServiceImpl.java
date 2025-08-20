@@ -23,7 +23,6 @@ public class UserServiceImpl implements UserService {
     if(user.getName() == null || user.getName().isEmpty() ||
         user.getEmail() == null || user.getEmail().isEmpty()) {
         throw new UserFieldsValidationException("Some field is empty.");
-
     }
     Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
     if (existingUser.isPresent()) {

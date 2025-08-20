@@ -1,5 +1,7 @@
 package com.paula.apiusuario.endpoints.dtos;
 
+import com.paula.apiusuario.domain.Address;
+
 public class AddressResponseDTO {
 
     private String logradouro;
@@ -8,12 +10,12 @@ public class AddressResponseDTO {
     private String localidade;
     private String uf;
 
-    public AddressResponseDTO(String logradouro, String complemento, String bairro, String localidade, String uf) {
-        this.logradouro = logradouro;
-        this.complemento = complemento;
-        this.bairro = bairro;
-        this.localidade = localidade;
-        this.uf = uf;
+    public AddressResponseDTO(Address address) {
+        this.logradouro = address.getLogradouro();
+        this.complemento = address.getComplemento();
+        this.bairro = address.getBairro();
+        this.localidade = address.getLocalidade();
+        this.uf = address.getUf();
     }
 
     public String getLogradouro() {
