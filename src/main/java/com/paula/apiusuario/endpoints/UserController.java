@@ -46,8 +46,10 @@ public class UserController {
         return ResponseEntity.ok().body("User added successfully!");//200 OK
     }
     //testar
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable Long id) {
+    @PutMapping("/{id}") //atualizar usuário
+    public ResponseEntity<?> updateUser(@RequestBody UserRequestDTO userRequestDTO, @PathVariable Long id) {
+        User user = userRequestDTO.toEntity();
+
         user.setId(id);
         try {
             userService.updateUser(user);
@@ -97,6 +99,7 @@ public class UserController {
             }).toList();
 
             return ResponseEntity.ok(userResponseDTOs); //200 OK
+
         }catch (UserNotFoundException e) {
             return ResponseEntity.noContent().build(); //204 No Content
         } catch (Exception e) {
