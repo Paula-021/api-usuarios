@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException("User not found with ID: " + user.getId());
         }
         if(user.getName() == null || user.getName().isEmpty() ||
-           user.getEmail() == null || user.getEmail().isEmpty() || user.getAddress() == null) {
+           user.getEmail() == null || user.getEmail().isEmpty()) {
             throw new UserFieldsValidationException("Some field is empty.");
         }
         Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
