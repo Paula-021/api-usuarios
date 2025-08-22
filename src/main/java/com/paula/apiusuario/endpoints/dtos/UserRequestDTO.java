@@ -16,6 +16,13 @@ public class UserRequestDTO {
 
         return user;
     }
+    public User toEntity() {
+        User user = new User();
+        user.setName(this.name);
+        user.setEmail(this.email);
+
+        return user;
+    }
 
     public String getName() {
         return name;
