@@ -14,3 +14,8 @@
 //DTO -> Data Transfer Object
 
 AddressResponseDTO -> cep, logradouro, bairro, cidade, estado
+
+
+1°: o usuário mudou de endereço => pegar o cep novo => buscar o cep na viacepapi => deletar o endereço antigo do usuário => adicionar o novo endereço na tabela de endereço (PATCH)
+
+2°: o usuário não mudou de endereço => só quer preencher as infos do endereço que faltam (ex: complemento, logradouro, etc) (PUT)
