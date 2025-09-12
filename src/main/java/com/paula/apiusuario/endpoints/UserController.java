@@ -2,11 +2,11 @@ package com.paula.apiusuario.endpoints;
 
 import com.paula.apiusuario.domain.Address;
 import com.paula.apiusuario.domain.User;
+import com.paula.apiusuario.endpoints.dtos.AddressResponseDTO;
 import com.paula.apiusuario.endpoints.dtos.UserRequestDTO;
-import com.paula.apiusuario.exceptions.UserEmailExistsException;
-import com.paula.apiusuario.exceptions.UserExistsValidationException;
-import com.paula.apiusuario.exceptions.UserFieldsValidationException;
-import com.paula.apiusuario.exceptions.UserNotFoundException;
+import com.paula.apiusuario.endpoints.dtos.UserResponseDTO;
+import com.paula.apiusuario.exceptions.*;
+import com.paula.apiusuario.services.AddressService;
 import com.paula.apiusuario.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController //Bean -> Uma anotação que indica que a classe é um controlador REST do Spring
@@ -39,14 +40,16 @@ public class UserController {
         } catch (AddressNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); //404 Not Found
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error adding user"); //400 Bad Request
+            return ResponseEntity.badRequest().body("Error adding user" + e.getMessage()); //400 Bad Request
         }
 
         return ResponseEntity.ok().body("User added successfully!");//200 OK
     }
     //testar
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable Long id) {
+    @PutMapping("/{id}") //atualizar usuário
+    public ResponseEntity<?> updateUser(@RequestBody UserRequestDTO userRequestDTO, @PathVariable Long id) {
+        User user = userRequestDTO.toEntity();
+
         user.setId(id);
         try {
             userService.updateUser(user);
@@ -74,20 +77,29 @@ public class UserController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
-        User user = null;
+        UserResponseDTO userResponseDTO = null;
         try {
-            user = userService.getUserById(id);
+            User user = userService.getUserById(id);
+            AddressResponseDTO addressResponseDTO = new AddressResponseDTO(user.getAddress());
+            userResponseDTO = new UserResponseDTO(user.getName(), user.getEmail(), addressResponseDTO);
         } catch (UserNotFoundException e) {
             return ResponseEntity.notFound().build(); //404 Not Found
         }
-        return ResponseEntity.ok(user); //200 OK
+        return ResponseEntity.ok(userResponseDTO); //200 OK
     }
     @GetMapping
     public ResponseEntity<?> getAllUsers () {
 
         try {
             List<User> users = userService.getAllUsers();
-            return ResponseEntity.ok(users); //200 OK
+
+            List<UserResponseDTO> userResponseDTOs = users.stream().map(user -> {
+                AddressResponseDTO addressResponseDTO = new AddressResponseDTO(user.getAddress());
+                return new UserResponseDTO(user.getName(), user.getEmail(), addressResponseDTO);
+            }).toList();
+
+            return ResponseEntity.ok(userResponseDTOs); //200 OK
+
         }catch (UserNotFoundException e) {
             return ResponseEntity.noContent().build(); //204 No Content
         } catch (Exception e) {
