@@ -3,12 +3,12 @@ package com.paula.apiusuario.endpoints.dtos;
 public class UserResponseDTO {
     private String name;
     private String email;
-    private AddressResponseDTO addressResponseDTO;
+    private AddressResponseDTO address;
 
-    public UserResponseDTO(String name, String email, AddressResponseDTO addressResponseDTO) {
+    public UserResponseDTO(String name, String email, AddressResponseDTO address) {
         this.name = name;
         this.email = email;
-        this.addressResponseDTO = addressResponseDTO;
+        this.address = address;
     }
 
     public String getName() {
@@ -27,11 +27,11 @@ public class UserResponseDTO {
         this.email = email;
     }
 
-    public AddressResponseDTO getAddressResponseDTO() {
-        return addressResponseDTO;
+    public AddressResponseDTO getAddress() {
+        return address;
     }
 
-    public void setAddressResponseDTO(AddressResponseDTO addressResponseDTO) {
-        this.addressResponseDTO = addressResponseDTO;
+    public void setAddress(AddressResponseDTO address) {
+        this.address = address;
     }
 }

@@ -1,19 +1,31 @@
 package com.paula.apiusuario.endpoints.dtos;
 
+import com.paula.apiusuario.domain.Address;
+
 public class AddressResponseDTO {
 
+    private Long id;
     private String logradouro;
     private String complemento;
     private String bairro;
     private String localidade;
     private String uf;
 
-    public AddressResponseDTO(String logradouro, String complemento, String bairro, String localidade, String uf) {
-        this.logradouro = logradouro;
-        this.complemento = complemento;
-        this.bairro = bairro;
-        this.localidade = localidade;
-        this.uf = uf;
+    public AddressResponseDTO(Address address) {
+        this.id = address.getId();
+        this.logradouro = address.getLogradouro();
+        this.complemento = address.getComplemento();
+        this.bairro = address.getBairro();
+        this.localidade = address.getLocalidade();
+        this.uf = address.getUf();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getLogradouro() {
