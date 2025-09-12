@@ -4,6 +4,7 @@ import com.paula.apiusuario.domain.Address;
 
 public class AddressResponseDTO {
 
+    private Long id;
     private String logradouro;
     private String complemento;
     private String bairro;
@@ -11,11 +12,20 @@ public class AddressResponseDTO {
     private String uf;
 
     public AddressResponseDTO(Address address) {
+        this.id = address.getId();
         this.logradouro = address.getLogradouro();
         this.complemento = address.getComplemento();
         this.bairro = address.getBairro();
         this.localidade = address.getLocalidade();
         this.uf = address.getUf();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getLogradouro() {
